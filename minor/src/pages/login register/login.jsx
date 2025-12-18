@@ -1,83 +1,107 @@
-import {useNavigate} from 'react-router-dom'
-import axios from 'axios';
-import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
-function Login(){
-const navigate=useNavigate();
+function Login() {
+  const navigate = useNavigate();
 
-const [email , setEmail]=useState('')
-const[password,setPassword]=useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const tohome=async()=>{
-    try{
-        const response= await axios.post('http://localhost:5000/Login',{
-            email:email,
-            password:password
-        })
-        console.log(response.data)
-        if (response.data.message === 'user present') {
-  localStorage.setItem('token', response.data.token)
-  localStorage.setItem('user', JSON.stringify(response.data.user))
-  navigate('/home')
-}
+  const tohome = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/Login", {
+        email,
+        password,
+      });
 
-else if (response.data.message === 'company present') {
-  localStorage.setItem('token', response.data.token)
-  localStorage.setItem('company', JSON.stringify(response.data.company))
-  navigate('/')
-}
-
-        console.log(response.data.company);
-       if(response.status===400 || response.data.message==='please signup')
-        alert('please signup')
-        console.log(email)
-        console.log(password);
+      if (response.data.message === "user present") {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        navigate("/home");
+      } else if (response.data.message === "company present") {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("company", JSON.stringify(response.data.company));
+        navigate("/");
+      } else {
+        alert("Please signup");
+      }
+    } catch (err) {
+      alert("Invalid credentials or user not found");
+      console.error(err);
     }
-    catch(err)
-    {
-        if(err.status===400 || err.data.message==='please signup'){
-            alert('please signup')
-        }
-        console.log(err);
-    }
-}
-const tosignup=()=>{
-    navigate('/Signup')
-}
+  };
 
-    return(<>
-    <div className=' text-black font-bold h-[50px] w-[600px] flex justify-center justify-self-center  items-center text-2xl'><p>Excellence Innovation Portal</p></div>
-    <div className='h-screen flex justify-center items-center  ' >
-
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-black">
+      
+      {/* Login Card */}
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8">
         
-            <div className='h-[500px] w-[500px] border-solid border-2 border-black bg-slate-900 rounded-2xl '>
-                <h3 className="flex justify-center mt-5 font-bold text-2xl text-white">Login page</h3>
-             <div className="flex mt-10 items-center justify-center font-bold text-white"> <p>Email:</p>
-               <input
-               className="border-2 border-black border-solid rounded-lg text-black"
-               type="email"
-               
-               value={email}
-               onChange={e=>setEmail(e.target.value)}
-               ></input>
-               </div>
-                   <div className="flex mt-5 items-center justify-center font-bold text-white">
-               <p>password:</p>
-               <input
-               className="border-2 border-black border-solid rounded-lg text-black"
-               type="password"
-               onChange={e=>setPassword(e.target.value)}
-               value={password}></input>
-              </div>
-              
-               <div className='flex justify-center'>
-               <button className="flex justify-center w-[250px] bg-slate-100 mt-10 border-2 border-black border-solid rounded-lg font-bold "
-               onClick={tohome}
-               >Login</button>
-               </div>
-               <div className="font-medium mt-5  text-white">dont have an account? <button className="text-red-600" onClick={tosignup}><u >Singup</u></button></div>
-            </div>
+        {/* Brand */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold text-white tracking-wide">
+            Excellence
+          </h1>
+          <p className="text-sm text-gray-300 mt-1">
+            Innovation Portal
+          </p>
         </div>
-    </>);
+
+        {/* Title */}
+        <h2 className="text-xl font-semibold text-white text-center mb-6">
+          Sign in to your account
+        </h2>
+
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block text-sm text-gray-300 mb-1">
+            Email Address
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="company@email.com"
+            className="w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-6">
+          <label className="block text-sm text-gray-300 mb-1">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Login Button */}
+        <button
+          onClick={tohome}
+          className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition font-semibold text-white"
+        >
+          Login
+        </button>
+
+        {/* Signup */}
+        <p className="text-sm text-gray-300 text-center mt-6">
+          Don’t have an account?{" "}
+          <button
+            onClick={() => navigate("/Signup")}
+            className="text-blue-400 hover:underline font-medium"
+          >
+            Sign up
+          </button>
+        </p>
+      </div>
+    </div>
+  );
 }
+
 export default Login;

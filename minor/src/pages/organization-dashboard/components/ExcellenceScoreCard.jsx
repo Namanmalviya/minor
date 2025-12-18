@@ -2,7 +2,7 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import Icon from '../../../components/AppIcon';
 
-const ExcellenceScoreCard = ({ score, trend, ranking, totalOrganizations, trendData }) => {
+const ExcellenceScoreCard = ({ score, trend, ranking, totalOrganizations, trendData,innovationScore,peopleScore,ecosystemScore }) => {
   const getScoreColor = () => {
     if (score >= 80) return 'text-success';
     if (score >= 60) return 'text-warning';
@@ -69,15 +69,15 @@ const ExcellenceScoreCard = ({ score, trend, ranking, totalOrganizations, trendD
       {/* Performance Indicators */}
       <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border">
         <div className="text-center">
-          <div className="text-lg font-semibold text-success">85%</div>
+          <div className="text-lg font-semibold text-success">{Math.round(innovationScore*10)*10}</div>
           <div className="text-xs text-muted-foreground">R&D Excellence</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-semibold text-warning">72%</div>
+          <div className="text-lg font-semibold text-warning">{Math.round(peopleScore*10)*10}</div>
           <div className="text-xs text-muted-foreground">Innovation Output</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-semibold text-primary">78%</div>
+          <div className="text-lg font-semibold text-primary">{Math.round(ecosystemScore*10)*10}</div>
           <div className="text-xs text-muted-foreground">Ecosystem Impact</div>
         </div>
       </div>

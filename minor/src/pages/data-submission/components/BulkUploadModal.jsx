@@ -69,12 +69,15 @@ const BulkUploadModal = ({ isOpen, onClose, onUpload }) => {
     }
   };
 
-  const handleFileSelect = (file) => {
-    if (file && (file?.type?.includes('spreadsheet') || file?.name?.endsWith('.xlsx') || file?.name?.endsWith('.csv'))) {
-      setSelectedFile(file);
-      setUploadErrors([]);
-    }
-  };
+ const handleFileSelect = (file) => {
+  if (file && file.type === 'application/pdf') {
+    setSelectedFile(file);
+    setUploadErrors([]);
+  } else {
+    alert('Only PDF files are allowed');
+  }
+};
+
 
   const handleFileInputChange = (e) => {
     if (e?.target?.files && e?.target?.files?.[0]) {
@@ -82,25 +85,28 @@ const BulkUploadModal = ({ isOpen, onClose, onUpload }) => {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (e) => {
     if (!selectedFile) return;
+    const formdata=new FormData()
+    formdata.append("file",file)
+    console.log(file)
+    // setIsUploading(true);
+    // setUploadProgress(0);
     
-    setIsUploading(true);
-    setUploadProgress(0);
-    
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-          // Simulate validation errors
-          setUploadErrors(mockErrors);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 200);
+    // e.preventDefault()
+    // // Simulate upload progress
+    // const interval = setInterval(() => {
+    //   setUploadProgress(prev => {
+    //     if (prev >= 100) {
+    //       clearInterval(interval);
+    //       setIsUploading(false);
+    //       // Simulate validation errors
+    //       setUploadErrors(mockErrors);
+    //       return 100;
+    //     }
+    //     return prev + 10;
+    //   });
+    // }, 200);
   };
 
   const handleTemplateDownload = (template) => {
@@ -168,13 +174,14 @@ const BulkUploadModal = ({ isOpen, onClose, onUpload }) => {
                   >
                     Choose File
                   </Button>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".csv,.xlsx,.xls"
-                    onChange={handleFileInputChange}
-                    className="hidden"
-                  />
+                 <input
+  ref={fileInputRef}
+  type="file"
+  accept=".pdf"
+  onChange={handleFileInputChange}
+  className="hidden"
+/>
+
                 </div>
 
                 {selectedFile && (
@@ -237,8 +244,8 @@ const BulkUploadModal = ({ isOpen, onClose, onUpload }) => {
                   <Button
                     variant="default"
                     onClick={handleUpload}
-                    disabled={!selectedFile || isUploading}
-                    loading={isUploading}
+                   // disabled={!selectedFile || isUploading}
+                   //loading={isUploading}
                     className="flex-1"
                   >
                     Upload & Validate

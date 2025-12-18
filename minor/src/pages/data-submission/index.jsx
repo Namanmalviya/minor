@@ -21,9 +21,17 @@ const DataSubmission = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionData, setSubmissionData] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+
     const token = localStorage.getItem('token')
-    //console.log(token)
+    const company = JSON.parse(localStorage.getItem('company'))
+    console.log(token)
+    console.log(company)
   // Form sections configuration
+
+
+  
+  console.log(submissionData)
   const formSections = [
     {
       id: 'rd-metrics',
@@ -387,30 +395,46 @@ const DataSubmission = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      return;
-    }
+  if (!validateForm()) return;
 
-    setIsSubmitting(true);
-    const response=axios.post('http://localhost:5000/data-submission',formData, {
-     headers: {
-       Authorization: `Bearer ${token}`
-     }
+  if (!pdfFile) {
+    alert('Please upload a verification PDF');
+    return;
   }
-  
-).then((response)=>{
-setSubmissionData(response.data.submission)
-})
 
-    console.log('Submitting form data:', formData);
-    
-    // Simulate submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Navigate to dashboard or show success message
-      navigate('/organization-dashboard');
-    }, 2000);
-  };
+  setIsSubmitting(true);
+
+  try {
+    const submitData = new FormData();
+
+    // Append all form fields
+    Object.entries(formData).forEach(([key, value]) => {
+      submitData.append(key, value);
+    });
+
+    // Append PDF
+    submitData.append('document', pdfFile);
+
+    await axios.post(
+      'http://localhost:5000/data-submission',
+      submitData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    navigate('/organization-dashboard');
+  } catch (err) {
+    console.error(err);
+    alert('Submission failed');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   // Handle save as draft
   const handleSaveDraft = () => {
@@ -437,7 +461,7 @@ setSubmissionData(response.data.submission)
       industryPartnerships: submissionData?.industryPartnerships || 7,
       academicPartnerships: submissionData?.academicPartnerships || 3
     };
-    
+    console.log('Loaded saved data:', savedData);
     setFormData(savedData);
     setLastSaved(new Date(Date.now() - 300000)); // 5 minutes ago
   }, []);
@@ -536,9 +560,45 @@ setSubmissionData(response.data.submission)
                       error={errors?.[field?.name]}
                     />
                   ))}
+                 
+
                 </div>
+                
+               
               </FormSection>
+              
             ))}
+            <div className="mt-6">
+  <label className="block text-sm font-medium text-foreground mb-2">
+    Upload Verification Document (PDF)
+  </label>
+
+  <input
+    type="file"
+    accept="application/pdf"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file?.type === 'application/pdf') {
+        setPdfFile(file);
+      } else {
+        alert('Only PDF files are allowed');
+      }
+    }}
+    className="block w-full text-sm text-muted-foreground
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-md file:border-0
+      file:text-sm file:font-medium
+      file:bg-primary file:text-primary-foreground
+      hover:file:bg-primary/90"
+  />
+
+  {pdfFile && (
+    <p className="mt-2 text-sm text-muted-foreground">
+      Selected file: <span className="font-medium">{pdfFile.name}</span>
+    </p>
+  )}
+</div>
+
           </div>
 
           {/* Action Buttons */}
@@ -553,14 +613,14 @@ setSubmissionData(response.data.submission)
             </Button>
             
             <div className="flex space-x-3">
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={handleSaveDraft}
                 iconName="Save"
                 iconPosition="left"
               >
                 Save Draft
-              </Button>
+              </Button> */}
               <Button
                 variant="default"
                 onClick={handleSubmit}

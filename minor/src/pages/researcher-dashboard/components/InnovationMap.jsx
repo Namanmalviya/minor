@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
-
+import Worldmap from './worldmap'
 const InnovationMap = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   
@@ -57,33 +57,11 @@ const InnovationMap = () => {
       </div>
       <div className="relative">
         {/* World Map Visualization */}
-        <div className="relative w-full h-80 bg-muted/30 rounded-lg overflow-hidden">
+        <div className="relative w-full h-96 bg-muted/30 rounded-lg overflow-hidden">
+        <Worldmap className='h-full w-full'></Worldmap>
           <svg viewBox="0 0 100 70" className="w-full h-full">
             {/* Simplified world map paths */}
-            <path
-              d="M10,15 L35,15 L35,45 L10,45 Z"
-              fill="#f1f5f9"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
-            />
-            <path
-              d="M40,10 L70,10 L70,40 L40,40 Z"
-              fill="#f1f5f9"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
-            />
-            <path
-              d="M65,25 L90,25 L90,55 L65,55 Z"
-              fill="#f1f5f9"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
-            />
-            <path
-              d="M15,50 L40,50 L40,65 L15,65 Z"
-              fill="#f1f5f9"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
-            />
+           
 
             {/* Innovation density circles */}
             {regionData?.map((region) => (

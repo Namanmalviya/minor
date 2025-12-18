@@ -15,7 +15,13 @@ import Register from './pages/login register/register'
 import Home from './userdashboard/Home'
 import Research from './userdashboard/Researchinfo'
 import Innovation from './userdashboard/Innovationinfo'
-
+import Organizationprofile from './components/organizationprofile'
+import AdminDashboard from "./admin/admindashboard";
+import Approve from "./admin/approve";
+import Users from "./admin/users";
+// import AdminDashboard from "./admin/admindashboard";
+ import  Companydetails from "./admin/company-details";
+import Companylist from "./admin/companylist";
 const Routes = () => {
   return (
     <BrowserRouter>
@@ -36,6 +42,13 @@ const Routes = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/research" element={<Research />} />
         <Route path="/innovationinfo" element={<Innovation />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/Companies" element={<Companylist />} />
+        <Route path="/organizationprofile" element={<Organizationprofile />} />
+        <Route path="/Companies/details" element={<Companydetails />} />
+        <Route path="/Approved_Submissions" element={<Approve />} />
+        <Route path="/Users" element={<Users />} />
+       
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
       </ErrorBoundary>

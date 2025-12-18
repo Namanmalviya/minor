@@ -11,7 +11,8 @@ const registeruser=mongoose.Schema({
           email:{type:String, required:true},
           password:{type:String, required:true},
           website:{type:String},
-          country:{type:String, required:true}
+          country:{type:String, required:true},
+          status:{type:String || "pending"}
 })
 
 const registerusermodel=mongoose.model('registeruser',registeruser)

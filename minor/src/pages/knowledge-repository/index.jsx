@@ -354,10 +354,7 @@ const KnowledgeRepository = () => {
           </div>
 
           {/* Search and Filters */}
-          <SearchFilters
-            onFiltersChange={setSearchFilters}
-            onSearch={handleSearch} />
-
+         
 
           {/* Featured Content */}
           <FeaturedContent onViewContent={handleViewContent} />
@@ -387,6 +384,10 @@ const KnowledgeRepository = () => {
               </select>
             </div>
           </div>
+
+          <SearchFilters
+            onFiltersChange={setSearchFilters}
+            onSearch={handleSearch} />
 
           {/* Content Grid */}
           <ContentGrid

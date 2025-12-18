@@ -1,88 +1,136 @@
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom'
-import axios from 'axios'
-function Signup(){
-     const [email,setEmail]=useState('')
-     const [password,setPassword]=useState('')
-     const [confirmpassword,setConfirmpassword]=useState('')
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const navigate=useNavigate();
-    const tologin=async()=>{
-        try{
-        const response=await axios.post('http://localhost:5000/Signup',{
-            email:email,
-            password:password
-        })
-        alert(response.data.message)
+function Signup() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async () => {
+    if (password !== confirmPassword) {
+      return alert("Passwords do not match");
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await axios.post("http://localhost:5000/Signup", {
+        email,
+        password,
+      });
+
+      alert(response.data.message);
+      navigate("/Login");
+    } catch (err) {
+      if (err.response?.status === 400) {
+        alert(err.response.data.message || "User already exists");
+      } else {
+        alert("Something went wrong");
+        console.error(err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900">
+      
+      {/* Signup Card */}
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8">
         
-    }
-        
-         catch(err){
-            if(err.status===400 || err.data.message==='user exist'){
-
-             return alert('user exist')}
-
-             else{
-            console.log(err)}
-             } 
-
-        console.log(email);
-        console.log(password)
-        console.log(confirmpassword)
-        if(password===confirmpassword){
-
-        navigate('/Login')
-        }
-        else{
-            alert("password did not match")
-        }
-    }
-    const directtologin=()=>{
-           navigate('/Login')
-    }
-
-    const toregister=()=>{
-        navigate('/Register')
-    }
-    
-
-    return(
-        <>
-        <div className='h-screen flex justify-center items-center bg-purple-300'>
-            <div className='h-[500px] w-[500px] border-solid border-2 border-black bg-slate-100 rounded-2xl '>
-                <h3 className="flex justify-center mt-5 font-bold text-2xl">Signup page</h3>
-             <div className="flex mt-10 items-center justify-center font-bold"> <p>Email:</p>
-               <input
-               className="border-2 border-black border-solid rounded-lg"
-               type="email"
-               value={email}
-               onChange={e=>setEmail(e.target.value)}
-               ></input>
-               </div>
-                   <div className="flex mt-5 items-center justify-center font-bold">
-               <p>password:</p>
-               <input
-               className="border-2 border-black border-solid rounded-lg"
-               type="password"
-               value={password}
-               onChange={e=>setPassword(e.target.value)}></input>
-              </div>
-              <div className="flex mt-5 items-center justify-center font-bold">
-               <p>confirm:</p>
-               <input 
-                className="border-2 border-black border-solid rounded-lg"
-               type="password"
-               value={confirmpassword}
-               onChange={e=>setConfirmpassword(e.target.value)}></input>
-               </div>
-               <div className='flex justify-center'>
-               <button className="flex justify-center w-[250px] bg-purple-300 mt-10 border-2 border-black border-solid rounded-lg font-bold" onClick={tologin}>signup</button>
-               </div>
-                <p className="font-medium mt-5 text-black">Already have an account? <button className="text-blue-800" ><u >Loign</u></button></p>
-                      <button className='bg-blue-800 flex justify-center w-[200px] ml-12 mt-3 rounded-lg h-[30px] text-white font-bold' onClick={toregister}>register as an institute</button>
-            </div>
+        {/* Brand */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold text-white tracking-wide">
+            Excellence
+          </h1>
+          <p className="text-sm text-gray-300 mt-1">
+            Innovation Portal
+          </p>
         </div>
-        </>
-    );
+
+        {/* Title */}
+        <h2 className="text-xl font-semibold text-white text-center mb-6">
+          Create your account
+        </h2>
+
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block text-sm text-gray-300 mb-1">
+            Email Address
+          </label>
+          <input
+            type="email"
+            placeholder="company@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-4">
+          <label className="block text-sm text-gray-300 mb-1">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div className="mb-6">
+          <label className="block text-sm text-gray-300 mb-1">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg bg-white/90 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        {/* Signup Button */}
+        <button
+          onClick={handleSignup}
+          disabled={loading}
+          className="w-full py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition font-semibold text-white disabled:opacity-50"
+        >
+          {loading ? "Creating account..." : "Sign Up"}
+        </button>
+
+        {/* Links */}
+        <div className="text-sm text-gray-300 text-center mt-6 space-y-3">
+          <p>
+            Already have an account?{" "}
+            <button
+              onClick={() => navigate("/Login")}
+              className="text-purple-400 hover:underline font-medium"
+            >
+              Login
+            </button>
+          </p>
+
+          <button
+            onClick={() => navigate("/Register")}
+            className="w-full py-2 border border-purple-400 rounded-lg text-purple-300 hover:bg-purple-400/10 transition"
+          >
+            Register as an Institute
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
+
 export default Signup;

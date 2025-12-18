@@ -86,6 +86,8 @@ const AnalyticsVisualization = () => {
     setComparisonMode(comparison);
   };
 
+  console.log(chartConfig)
+
   const quickActions = [
     {
       label: 'Dashboard',

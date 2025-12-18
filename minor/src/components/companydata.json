@@ -1,0 +1,86 @@
+{
+  "name": "TechNova Solutions Pvt. Ltd.",
+  "tagline": "Innovating the Future with Intelligent Systems",
+  "logo": "https://via.placeholder.com/150",
+  "status": "Verified",
+
+  "industry": "Artificial Intelligence & Software Development",
+  "founded": "2018",
+  "size": "100-200 Employees",
+  "registrationNo": "GSTIN09ABCDE1234Z0",
+  "type": "Private Limited",
+  "location": "Indore, Madhya Pradesh, India",
+
+  "description": "TechNova Solutions is a leading AI-driven technology company focused on delivering intelligent automation, analytics, and enterprise solutions. Our goal is to help organizations transition into the future using scalable digital systems.",
+
+  "email": "contact@technova.com",
+  "phone": "+91 9876543210",
+  "website": "https://technova.com",
+  "address": "Plot No. 52, IT Park, Indore, MP 452010",
+
+  "metrics": {
+    "employees": 150,
+    "projects": 42,
+    "patents": 5,
+    "revenue": "₹12 Crore"
+  },
+
+  "products": [
+    {
+      "name": "NovaAI",
+      "description": "An AI-powered automation suite that helps enterprises optimize workflow, operations, and decision-making."
+    },
+    {
+      "name": "Insight360",
+      "description": "A comprehensive analytics dashboard for business intelligence and real-time reporting."
+    }
+  ],
+
+  "team": [
+    {
+      "name": "Amit Sharma",
+      "position": "Chief Executive Officer",
+      "photo": "https://via.placeholder.com/100"
+    },
+    {
+      "name": "Riya Verma",
+      "position": "Chief Technology Officer",
+      "photo": "https://via.placeholder.com/100"
+    },
+    {
+      "name": "Karan Patel",
+      "position": "Operations Manager",
+      "photo": "https://via.placeholder.com/100"
+    }
+  ],
+
+  "documents": [
+    {
+      "name": "Company Registration Certificate",
+      "url": "https://example.com/documents/registration.pdf"
+    },
+    {
+      "name": "ISO 9001 Certification",
+      "url": "https://example.com/documents/iso.pdf"
+    }
+  ],
+
+  "timeline": [
+    {
+      "year": "2018",
+      "event": "Company founded by Amit Sharma & team."
+    },
+    {
+      "year": "2019",
+      "event": "Launched the first AI workflow automation engine."
+    },
+    {
+      "year": "2021",
+      "event": "Achieved ISO 9001 quality certification."
+    },
+    {
+      "year": "2023",
+      "event": "Crossed 150 employees and expanded to new office space."
+    }
+  ]
+}

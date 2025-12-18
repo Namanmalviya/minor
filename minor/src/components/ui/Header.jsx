@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
+import logo from './companylogo.jpg'
+const Header = (companyname) => {
 
-const Header = () => {
+ console.log(companyname)
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,6 +19,12 @@ const Header = () => {
   const profileRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const logout=()=>{
+    localStorage.removeItem("token");
+    localStorage.removeItem('company')
+    navigate('/login');
+}
 
   const navigationItems = [
     { 
@@ -184,10 +192,10 @@ const Header = () => {
               className="flex items-center space-x-2 px-3"
             >
               <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                <Icon name="User" size={16} color="white" />
+                <img src={logo} className='rounded-full'></img>
               </div>
               <div className="hidden lg:block text-left">
-                <p className="text-sm font-medium text-foreground">Sarah Chen</p>
+                <p className="text-sm font-medium text-foreground">{companyname.companyname}</p>
                 <p className="text-xs text-muted-foreground">Innovation Manager</p>
               </div>
               <Icon name="ChevronDown" size={16} className="hidden lg:block" />
@@ -196,14 +204,14 @@ const Header = () => {
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-popover border border-border rounded-lg shadow-modal z-50 animate-fade-in">
                 <div className="p-4 border-b border-border">
-                  <p className="font-medium text-foreground">Sarah Chen</p>
+                  <p className="font-medium text-foreground">{companyname.companyname}</p>
                   <p className="text-sm text-muted-foreground">Innovation Manager</p>
                   <p className="text-xs text-muted-foreground mt-1">TechCorp Industries</p>
                 </div>
                 <div className="p-2">
-                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                  <Button variant="ghost" size="sm" className="w-full justify-start" onClick={() => navigate('/organizationprofile')}  >
                     <Icon name="User" size={16} className="mr-2" />
-                    Profile Settings
+                    Profile
                   </Button>
                   <Button variant="ghost" size="sm" className="w-full justify-start">
                     <Icon name="Building2" size={16} className="mr-2" />
@@ -218,7 +226,7 @@ const Header = () => {
                     Help & Support
                   </Button>
                   <div className="border-t border-border my-2"></div>
-                  <Button variant="ghost" size="sm" className="w-full justify-start text-error">
+                  <Button variant="ghost" size="sm" className="w-full justify-start text-error" onClick={logout}>
                     <Icon name="LogOut" size={16} className="mr-2" />
                     Sign Out
                   </Button>

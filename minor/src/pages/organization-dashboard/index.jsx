@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import MetricCard from './components/MetricCard';
@@ -14,10 +14,26 @@ const OrganizationDashboard = () => {
   const company = JSON.parse(localStorage.getItem('company'))
   const token = localStorage.getItem('token')
 console.log(company)
-const id=company.companyid
+
+if (!company) {
+    alert("Please login first");
+    navigate("/login"); // or your login route
+    return;
+  
+
+}
+
+  const id=company.companyid
+const organizationData = {
+    name: company.companyName,
+    sector: company.companyType,
+    region: company.country,
+    establishedYear: 2015
+  
+ }
 console.log(token)
 console.log(id)
-//console.log(company.companyType)
+console.log(company.companyType)
 
 function normalize(value, min, max) {
   // safety checks
@@ -43,36 +59,48 @@ useEffect(()=>{
 console.log(companyinfo.companysubmission)
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
+  
   // Mock data for organization metrics
-  const organizationData = {
-    name: company.companyName,
-    sector: company.companyType,
-    region: company.country,
-    establishedYear: 2015
-  };
+  
 
+  const cs = companyinfo?.companysubmission ?? {
+  rdPercentage: 0,
+  rdExpenditure: 0,
+  patentApplications: 0,
+  patentsGranted: 0,
+  newProducts: 0,
+  prototypesBuilt: 0,
+  innovationStaff: 0,
+  totalStaff: 1, // to avoid division by zero
+  trainingPrograms: 0,
+  researchCollaborations: 0,
+  academicPartnerships: 0,
+  innovationAwards: 0,
+  commercializedProducts: 0,
+  newProductRevenue: 0
+};
 
 
   const  rdScore =
-   normalize(companyinfo?.companysubmission.rdPercentage, 0, 20) * 0.6 +
-   normalize(companyinfo?.companysubmission.rdExpenditure, 0, 10_000_000) * 0.4
+   normalize(cs.rdPercentage, 0, 20) * 0.6 +
+   normalize(cs.rdExpenditure, 0, 10_000_000) * 0.4
  console.log(rdScore)
   const innovationScore =
-  normalize(companyinfo?.companysubmission.patentsGranted, 0, 20) * 0.5 +
-  normalize(companyinfo?.companysubmission.newProducts, 0, 10) * 0.3 +
-  normalize(companyinfo?.companysubmission.prototypesBuilt, 0, 15) * 0.2
+  normalize(cs.patentsGranted, 0, 20) * 0.5 +
+  normalize(cs.newProducts, 0, 10) * 0.3 +
+  normalize(cs.prototypesBuilt, 0, 15) * 0.2
 
   const peopleScore =
-  normalize(companyinfo?.companysubmission.innovationStaff / companyinfo?.companysubmission.totalStaff, 0, 0.4) * 0.6 +
-  normalize(companyinfo?.companysubmission.trainingPrograms, 0, 10) * 0.4
+  normalize(cs.innovationStaff / cs.totalStaff, 0, 0.4) * 0.6 +
+  normalize(cs.trainingPrograms, 0, 10) * 0.4
 
   const ecosystemScore =
-  normalize(companyinfo?.companysubmission.researchCollaborations, 0, 15) * 0.5 +
-  normalize(companyinfo?.companysubmission.academicPartnerships, 0, 10) * 0.5
+  normalize(cs.researchCollaborations, 0, 15) * 0.5 +
+  normalize(cs.academicPartnerships, 0, 10) * 0.5
 
   const impactScore =
-  normalize(companyinfo?.companysubmission.innovationAwards, 0, 10) * 0.6 +
-  normalize(companyinfo?.companysubmission.commercializedProducts, 0, 10) * 0.4
+  normalize(cs.innovationAwards, 0, 10) * 0.6 +
+  normalize(cs.commercializedProducts, 0, 10) * 0.4
 
   const Score =
   rdScore * 25 +
@@ -101,7 +129,9 @@ console.log(companyinfo.companysubmission)
     ]
   };
 
-  const cs = companyinfo.companysubmission;
+  // Safe fallback: always at least an empty object
+
+
   function delta(current = 0, previous = 0, unit = "") {
   const diff = current - previous;
   return `${diff >= 0 ? "+" : ""}${diff}${unit}`;
@@ -292,7 +322,7 @@ const metrics = [
   return (
     <div className="min-h-screen bg-background">
       <p className=''>hello</p>
-      <Header />
+      <Header companyname={company.companyName} />
       <main className="pt-16">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Page Header */}
@@ -319,6 +349,9 @@ const metrics = [
               score={excellenceScore?.score}
               trend={excellenceScore?.trend}
               ranking={excellenceScore?.ranking}
+              innovationScore={innovationScore}
+              peopleScore={peopleScore}
+              ecosystemScore={ecosystemScore}
               totalOrganizations={excellenceScore?.totalOrganizations}
               trendData={excellenceScore?.trendData}
             />

@@ -132,6 +132,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* File Upload */}
           <div>
+            
             <label className="block text-sm font-medium text-foreground mb-2">
               Document File *
             </label>
@@ -145,8 +146,10 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
+              
               {formData?.file ? (
                 <div className="flex items-center justify-center space-x-2">
+                 
                   <Icon name="FileText" size={20} className="text-primary" />
                   <span className="text-sm text-foreground">{formData?.file?.name}</span>
                   <Button
@@ -160,6 +163,13 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
                 </div>
               ) : (
                 <div>
+                  
+                  <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={handleFileSelect}
+                //className="absolute inset-0  opacity-0 cursor-pointer"
+              />
                   <Icon name="Upload" size={32} className="text-muted-foreground mx-auto mb-2" />
                   <p className="text-muted-foreground mb-2">
                     Drag and drop your file here, or click to browse
@@ -167,14 +177,15 @@ const UploadModal = ({ isOpen, onClose, onUpload }) => {
                   <p className="text-xs text-muted-foreground">
                     Supported formats: PDF, DOC, DOCX (Max 10MB)
                   </p>
+                  
                 </div>
               )}
-              <input
+              {/* <input
                 type="file"
                 accept=".pdf,.doc,.docx"
                 onChange={handleFileSelect}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
+                className="absolute inset-0  opacity-0 cursor-pointer"
+              /> */}
             </div>
           </div>
 

@@ -51,7 +51,10 @@ const datasubmissionschema=mongoose.Schema({
   mentorshipPrograms: Number,
   networkEvents: Number,
   ecosystemRating: String,
-  diversityIndex: String
+  diversityIndex: String,
+  document: {
+  type: String // PDF file path
+}
 })
 const user=mongoose.model('user',userschema)
  const datasubmission=mongoose.model('datasubmission',datasubmissionschema)

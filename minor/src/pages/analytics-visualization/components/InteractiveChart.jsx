@@ -1,12 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import {
+  Chart as ChartJS,
+  LineElement,
+  BarElement,
+  ArcElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+import { Line, Bar, Pie, Doughnut } from "react-chartjs-2";
+
+ChartJS.register(
+  LineElement,
+  BarElement,
+  ArcElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
+
+
 
 const InteractiveChart = ({ config, data, onExport }) => {
   const chartRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState(null);
-
+  console.log(config)
   // Mock chart data based on configuration
   const generateChartData = (config) => {
     const mockData = {
@@ -56,59 +82,114 @@ const InteractiveChart = ({ config, data, onExport }) => {
     }, 500);
   }, [config]);
 
+  console.log(chartData)
+
   const renderChart = () => {
     if (!chartData) return null;
 
     switch (config?.chartType) {
-      case 'line':
-        return (
-          <div className="relative w-full h-96 bg-muted/20 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <Icon name="TrendingUp" size={48} className="mx-auto mb-4 text-primary" />
-              <p className="text-lg font-medium text-foreground">Line Chart Visualization</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Showing {chartData?.datasets?.length} data series over {chartData?.labels?.length} periods
-              </p>
-              <div className="mt-4 space-y-2">
-                {chartData?.datasets?.map((dataset, index) => (
-                  <div key={index} className="flex items-center justify-center space-x-2">
-                    <div 
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: dataset?.borderColor }}
-                    ></div>
-                    <span className="text-sm text-muted-foreground">{dataset?.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
+     case "line":
+  return (
+    <div className="relative w-full h-96 bg-white rounded-lg p-4">
+      <Line
+        data={chartData}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 12,
+                font: { size: 12 },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+            },
+          },
+          scales: {
+            x: {
+              ticks: { color: "#6b7280" },
+              grid: { display: false },
+            },
+            y: {
+              ticks: { color: "#6b7280" },
+              grid: { color: "rgba(0,0,0,0.05)" },
+            },
+          },
+        }}
+      />
+    </div>
+  );
+
       
-      case 'bar':
-        return (
-          <div className="relative w-full h-96 bg-muted/20 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <Icon name="BarChart3" size={48} className="mx-auto mb-4 text-primary" />
-              <p className="text-lg font-medium text-foreground">Bar Chart Visualization</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Comparing {chartData?.labels?.length} categories
-              </p>
-            </div>
-          </div>
-        );
+      case "bar":
+  return (
+    <div className="relative w-full h-96 bg-white rounded-lg p-4">
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: { mode: "index", intersect: false },
+          },
+          scales: {
+            x: {
+              ticks: { color: "#6b7280" },
+              grid: { display: false },
+            },
+            y: {
+              ticks: { color: "#6b7280" },
+              grid: { color: "rgba(0,0,0,0.05)" },
+            },
+          },
+        }}
+      />
+    </div>
+  );
+
       
-      case 'pie':
-        return (
-          <div className="relative w-full h-96 bg-muted/20 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <Icon name="PieChart" size={48} className="mx-auto mb-4 text-primary" />
-              <p className="text-lg font-medium text-foreground">Pie Chart Visualization</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Distribution across {chartData?.labels?.length} segments
-              </p>
-            </div>
-          </div>
-        );
+      case "pie":
+  const pieDataset = chartData.datasets[0]; // Use the first dataset
+
+  const pieData = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: pieDataset.label,
+        data: pieDataset.data,
+        backgroundColor: [
+          "#2563EB",
+          "#059669",
+          "#F59E0B",
+          "#DC2626",
+          "#7C3AED",
+          "#14B8A6",
+        ], // auto-colors
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <div className="relative w-full h-96 bg-white rounded-lg p-4">
+      <Pie
+        data={pieData}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+          },
+        }}
+      />
+    </div>
+  );
+
       
       case 'heatmap':
         return (

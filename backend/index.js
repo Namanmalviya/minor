@@ -10,6 +10,8 @@ const innovationdata=require('./innovation')
 const datasubmission=require('./datasubmission')
 const jwt=require('jsonwebtoken')
 
+app.use('/uploads', express.static('uploads'));
+
 
 //const protect = require("../middleware/authmiddleware");
 //const researchdata =require('./research.json')
@@ -172,16 +174,16 @@ app.post('/Register', async(req,res)=>{
         else{
              res.status(400).json({message:'already registered'})
         }
-        console.log(companyName,
-          industry,
-          companySize,
+        // console.log(companyName,
+        //   industry,
+        //   companySize,
           
-          companyType,
-          registrationNumber,
-          email,
-          password,
-          website,
-          country)
+        //   companyType,
+        //   registrationNumber,
+        //   email,
+        //   password,
+        //   website,
+        //   country)
 
     }
    catch(err){
@@ -230,12 +232,42 @@ app.post('/chatai',async(req,res)=>{
 
 
 
-app.use('/',datasubmission)
 
+app.use('/',datasubmission)
+//console.log('ok')
+
+app.post('/admin',async(req,res)=>{
+    try{
+    console.log('ok')
+     const userdata=await user.find({})
+     const totalcompanies=await registeruser.find({})
+     const datasubmissio=await data.find({})
+     //console.log(userdata,totalcompanies,datasubmissio)
+    res.json({userdata,totalcompanies,datasubmissio})
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+
+app.post('/companydetails',async(req,res)=>{
+    try{
+              const id=await req.body.id;
+    console.log(id)
+      const dataa=await data.findOne({company:id})
+       console.log(dataa)
+       res.json(dataa)
+    }
+    catch(err){
+        console.log(err)
+    }
+  
+})
 
 
 app.listen(5000,()=>{
     console.log('server started')
 })
 
-module.exports={verify};
+//module.exports={verify};az
